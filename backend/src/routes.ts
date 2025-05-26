@@ -12,7 +12,7 @@ const router = Router();
 const userLoginController = new UserLoginController();
 const adminUserController = new AdminUserController();
 const autoLoginController = new AutoLoginController();
-const controller = new FoodController();
+const foodController = new FoodController();
 
 // Public login routes
 router.post("/user/login", (req, res) => userLoginController.login(req, res));
@@ -27,18 +27,18 @@ router.get("/admin/auto-login", authMiddleware, (req, res) =>
 );
 
 // Public routes
-router.get("/", (req, res) => controller.list(req, res));
-router.get("/:id", (req, res) => controller.get(req, res));
+router.get("/food", (req, res) => foodController.list(req, res));
+router.get("/food/:id", (req, res) => foodController.get(req, res));
 
 // Admin routes
-router.post("/", adminAuthMiddleware, (req, res) =>
-  controller.create(req, res),
+router.post("/food", adminAuthMiddleware, (req, res) =>
+  foodController.create(req, res),
 );
-router.put("/:id", adminAuthMiddleware, (req, res) =>
-  controller.update(req, res),
+router.put("/food/:id", adminAuthMiddleware, (req, res) =>
+  foodController.update(req, res),
 );
-router.delete("/:id", adminAuthMiddleware, (req, res) =>
-  controller.delete(req, res),
+router.delete("/food/:id", adminAuthMiddleware, (req, res) =>
+  foodController.delete(req, res),
 );
 
 export default router;

@@ -5,6 +5,7 @@ import routes from "./routes"; // Import the routes
 
 AppDataSource.initialize()
   .then(async () => {
+    console.log("Data Source has been initialized!");
     // Create express app
     const app = express();
     app.use(bodyParser.json());
@@ -19,4 +20,4 @@ AppDataSource.initialize()
       );
     });
   })
-  .catch((error) => console.log(error));
+  .catch((error) => console.log("initialize error", error));
