@@ -3,15 +3,15 @@ import { Reservation } from "./Reservation";
 
 @Entity()
 export class Table {
-    @PrimaryGeneratedColumn()
-    id: number;
+  @PrimaryGeneratedColumn()
+  id: number;
 
-    @Column({ length: 10 })
-    table_number: string;
+  @Column({ length: 10 })
+  table_number: string;
 
-    @Column()
-    capacity: number;
+  @Column()
+  capacity: number;
 
-    @ManyToMany(() => Reservation, (reservation) => reservation.tables)
-    reservations: Reservation[];
+  @ManyToMany(() => Reservation, (reservation) => reservation.tables)
+  reservations: Reservation[];
 }

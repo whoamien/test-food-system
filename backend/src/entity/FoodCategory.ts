@@ -3,12 +3,12 @@ import { Food } from "./Food";
 
 @Entity()
 export class FoodCategory {
-    @PrimaryGeneratedColumn()
-    id: number;
+  @PrimaryGeneratedColumn()
+  id: number;
 
-    @Column({ length: 50 })
-    name: string;
+  @Column({ length: 50 })
+  name: string;
 
-    @OneToMany(() => Food, (food) => food.category)
-    foods: Food[];
+  @OneToMany(() => Food, (food) => food.category)
+  foods: Food[];
 }
