@@ -127,3 +127,13 @@ CREATE TABLE reservation_tables (
     FOREIGN KEY (reservation_id) REFERENCES reservations(id),
     FOREIGN KEY (table_id) REFERENCES tables(id)
 );
+
+-- 13. Admin User
+CREATE TABLE admin_users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(100) NOT NULL,
+    password_hash VARCHAR(255) NOT NULL,
+    email VARCHAR(100) UNIQUE NOT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    last_login DATETIME
+);
