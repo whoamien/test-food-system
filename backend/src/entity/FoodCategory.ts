@@ -1,14 +1,17 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from "typeorm";
-import { Food } from "./Food";
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
+import { Food } from './Food';
 
 @Entity()
 export class FoodCategory {
-  @PrimaryGeneratedColumn()
-  id: number;
+	@PrimaryGeneratedColumn()
+	id: number;
 
-  @Column({ length: 50 })
-  name: string;
+	@Column({ length: 50 })
+	name: string;
 
-  @OneToMany(() => Food, (food) => food.category)
-  foods: Food[];
+	@Column({ type: 'enum', enum: ['active', 'deleted'], default: 'active' })
+	status: 'active' | 'deleted';
+
+	@OneToMany(() => Food, (food) => food.category)
+	foods: Food[];
 }

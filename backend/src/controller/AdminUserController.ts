@@ -1,34 +1,63 @@
-import { Request, Response } from "express";
-import { AppDataSource } from "../data-source";
-import { AdminUser } from "../entity/AdminUser";
-import jwt from "jsonwebtoken";
+import { Request, Response } from 'express';
+import { AdminUserService } from '../service/AdminUserService';
 
 export class AdminUserController {
-  private adminUserRepository = AppDataSource.getRepository(AdminUser);
+	async getAll(req: Request, res: Response) {
+		try {
+			const adminUserService = AdminUserService.getInstance();
+			const users = await adminUserService.getAllAdminUsers();
+			res.json(users);
+		} catch (error) {
+			res.status(500).json({ message: 'Failed to fetch admin users.' });
+		}
+	}
 
-  // Admin login
-  async login(req: Request, res: Response): Promise<Response> {
-    const { username, passwordHash } = req.body;
+	async getById(req: Request, res: Response) {
+		try {
+			const adminUserService = AdminUserService.getInstance();
+			const user = await adminUserService.getAdminUserById(Number(req.params.id));
+			if (!user) {
+				return res.status(404).json({ message: 'Admin user not found.' });
+			}
+			res.json(user);
+		} catch (error) {
+			res.status(500).json({ message: 'Failed to fetch admin user.' });
+		}
+	}
 
-    if (!username || !passwordHash) {
-      return res
-        .status(400)
-        .json({ message: "Username and password are required." });
-    }
+	async create(req: Request, res: Response) {
+		try {
+			const adminUserService = AdminUserService.getInstance();
+			const newUser = await adminUserService.createAdminUser(req.body);
+			res.status(201).json(newUser);
+		} catch (error) {
+			res.status(400).json({ message: 'Failed to create admin user.' });
+		}
+	}
 
-    const adminUser = await this.adminUserRepository.findOneBy({ username });
+	async update(req: Request, res: Response) {
+		try {
+			const adminUserService = AdminUserService.getInstance();
+			const updatedUser = await adminUserService.updateAdminUser(Number(req.params.id), req.body);
+			if (!updatedUser) {
+				return res.status(404).json({ message: 'Admin user not found.' });
+			}
+			res.json(updatedUser);
+		} catch (error) {
+			res.status(400).json({ message: 'Failed to update admin user.' });
+		}
+	}
 
-    if (!adminUser || adminUser.password_hash !== passwordHash) {
-      return res.status(401).json({ message: "Invalid username or password." });
-    }
-
-    // Generate JWT token
-    const token = jwt.sign(
-      { id: adminUser.id, username: adminUser.username },
-      process.env.JWT_SECRET || "your_jwt_secret", // Use a secure secret in production
-      { expiresIn: "1h" },
-    );
-
-    return res.status(200).json({ message: "Login successful.", token });
-  }
+	async delete(req: Request, res: Response) {
+		try {
+			const adminUserService = AdminUserService.getInstance();
+			const deleted = await adminUserService.deleteAdminUser(Number(req.params.id));
+			if (!deleted) {
+				return res.status(404).json({ message: 'Admin user not found.' });
+			}
+			res.json({ message: 'Admin user deleted successfully.' });
+		} catch (error) {
+			res.status(500).json({ message: 'Failed to delete admin user.' });
+		}
+	}
 }

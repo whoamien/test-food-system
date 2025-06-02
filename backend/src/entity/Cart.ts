@@ -1,27 +1,21 @@
-import {
-  Entity,
-  PrimaryGeneratedColumn,
-  Column,
-  ManyToOne,
-  OneToMany,
-} from "typeorm";
-import { User } from "./User";
-import { CartItem } from "./CartItem";
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany } from 'typeorm';
+import { User } from './User';
+import { CartItem } from './CartItem';
 
 @Entity()
 export class Cart {
-  @PrimaryGeneratedColumn()
-  id: number;
+	@PrimaryGeneratedColumn()
+	id: number;
 
-  @ManyToOne(() => User, (user) => user.carts)
-  user: User;
+	@ManyToOne(() => User, (user) => user.carts)
+	user: User;
 
-  @Column({ type: "datetime", default: () => "CURRENT_TIMESTAMP" })
-  created_at: Date;
+	@Column({ type: 'datetime', default: () => 'CURRENT_TIMESTAMP' })
+	created_at: Date;
 
-  @Column({ default: false })
-  checked_out: boolean;
+	@Column({ default: false })
+	checked_out: boolean;
 
-  @OneToMany(() => CartItem, (cartItem) => cartItem.cart)
-  items: CartItem[];
+	@OneToMany(() => CartItem, (cartItem) => cartItem.cart)
+	items: CartItem[];
 }
